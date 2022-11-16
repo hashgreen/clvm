@@ -142,6 +142,13 @@ class SExp:
 
     @classmethod
     def to(class_, v: CastableType) -> "SExp":
+        if isinstance(v, class_):
+            return v
+
+        if looks_like_clvm_object(v):
+            return class_(v)
+
+        # this will lazily convert elements
         return class_(to_sexp_type(v))
 
     def cons(self, right):
