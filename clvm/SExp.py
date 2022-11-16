@@ -4,16 +4,10 @@ import typing
 from blspy import G1Element
 
 from .as_python import as_python
+from .casts import int_from_bytes, int_to_bytes
 from .CLVMObject import CLVMObject
-
 from .EvalError import EvalError
-
-from .casts import (
-    int_from_bytes,
-    int_to_bytes,
-)
 from .serialize import sexp_to_stream
-
 
 CastableType = typing.Union[
     "SExp",
@@ -64,17 +58,21 @@ def to_sexp_type(
         return v
 
     if isinstance(v, tuple):
-        return CLVMObject((
-            to_sexp_type(v[0]),
-            to_sexp_type(v[1]),
-        ))
+        return CLVMObject(
+            (
+                to_sexp_type(v[0]),
+                to_sexp_type(v[1]),
+            )
+        )
 
     if isinstance(v, list):
         if len(v):
-            return CLVMObject((
-                to_sexp_type(v[0]),
-                to_sexp_type(v[1:]),
-            ))
+            return CLVMObject(
+                (
+                    to_sexp_type(v[0]),
+                    to_sexp_type(v[1:]),
+                )
+            )
         else:
             return CLVMObject(NULL)
 
@@ -95,6 +93,7 @@ class SExp:
        elements implementing the CLVM object protocol.
     Exactly one of "atom" and "pair" must be None.
     """
+
     true: "SExp"
     false: "SExp"
     __null__: "SExp"

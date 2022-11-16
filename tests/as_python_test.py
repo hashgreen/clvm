@@ -1,8 +1,9 @@
 import unittest
 
+from blspy import G1Element
+
 from clvm import SExp
 from clvm.CLVMObject import CLVMObject
-from blspy import G1Element
 from clvm.EvalError import EvalError
 
 

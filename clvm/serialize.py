@@ -13,8 +13,8 @@
 #   1000 0000 -> 0 bytes : nil
 #   0000 0000 -> 1 byte : zero (b'\x00')
 import io
-from .CLVMObject import CLVMObject
 
+from .CLVMObject import CLVMObject
 
 MAX_SINGLE_BYTE = 0x7F
 CONS_BOX_MARKER = 0xFF

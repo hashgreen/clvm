@@ -10,4 +10,3 @@ Testing
 
     $ pip install -e '.[dev]'
     $ py.test tests
-

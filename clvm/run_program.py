@@ -1,16 +1,15 @@
 from typing import Any, Callable, List, Tuple
 
 from .CLVMObject import CLVMObject
-from .EvalError import EvalError
-from .SExp import SExp
-
 from .costs import (
     APPLY_COST,
-    QUOTE_COST,
     PATH_LOOKUP_BASE_COST,
     PATH_LOOKUP_COST_PER_LEG,
-    PATH_LOOKUP_COST_PER_ZERO_BYTE
+    PATH_LOOKUP_COST_PER_ZERO_BYTE,
+    QUOTE_COST,
 )
+from .EvalError import EvalError
+from .SExp import SExp
 
 # the "Any" below should really be "OpStackType" but
 # recursive types aren't supported by mypy
@@ -85,7 +84,10 @@ def run_program(
         bitmask = 0x01
         while byte_cursor > end_byte_cursor or bitmask < end_bitmask:
             if env.pair is None:
-                raise EvalError("path into atom while running traverse_path '%s' on" % sexp, original_env)
+                raise EvalError(
+                    "path into atom while running traverse_path '%s' on" % sexp,
+                    original_env,
+                )
             if b[byte_cursor] & bitmask:
                 env = env.rest()
             else:

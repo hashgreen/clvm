@@ -1,46 +1,37 @@
 from typing import Dict, Tuple
 
 from . import core_ops, more_ops
-
-from .CLVMObject import CLVMObject
-from .SExp import SExp
-from .EvalError import EvalError
-
 from .casts import int_to_bytes
-from .op_utils import operators_for_module
-
+from .CLVMObject import CLVMObject
 from .costs import (
     ARITH_BASE_COST,
-    ARITH_COST_PER_BYTE,
     ARITH_COST_PER_ARG,
+    ARITH_COST_PER_BYTE,
+    CONCAT_BASE_COST,
+    CONCAT_COST_PER_ARG,
+    CONCAT_COST_PER_BYTE,
     MUL_BASE_COST,
     MUL_COST_PER_OP,
     MUL_LINEAR_COST_PER_BYTE,
     MUL_SQUARE_COST_PER_BYTE_DIVIDER,
-    CONCAT_BASE_COST,
-    CONCAT_COST_PER_ARG,
-    CONCAT_COST_PER_BYTE,
 )
+from .EvalError import EvalError
+from .op_utils import operators_for_module
+from .SExp import SExp
 
 KEYWORDS = (
     # core opcodes 0x01-x08
     ". q a i c f r l x "
-
     # opcodes on atoms as strings 0x09-0x0f
     "= >s sha256 substr strlen concat . "
-
     # opcodes on atoms as ints 0x10-0x17
     "+ - * / divmod > ash lsh "
-
     # opcodes on atoms as vectors of bools 0x18-0x1c
     "logand logior logxor lognot . "
-
     # opcodes for bls 1381 0x1d-0x1f
     "point_add pubkey_for_exp . "
-
     # bool opcodes 0x20-0x23
     "not any all . "
-
     # misc 0x24
     "softfork "
 ).split()
@@ -98,6 +89,7 @@ def args_len(op_name, args):
 
 # this means that unknown ops where cost_function is 1, 2, or 3, may still be
 # fatal errors if the arguments passed are not atoms.
+
 
 def default_unknown_op(op: bytes, args: CLVMObject) -> Tuple[int, CLVMObject]:
     # any opcode starting with ffff is reserved (i.e. fatal error)
@@ -199,6 +191,8 @@ QUOTE_ATOM = KEYWORD_TO_ATOM["q"]
 APPLY_ATOM = KEYWORD_TO_ATOM["a"]
 
 OPERATOR_LOOKUP = OperatorDict(
-    operators_for_module(KEYWORD_TO_ATOM, core_ops, OP_REWRITE), quote=QUOTE_ATOM, apply=APPLY_ATOM
+    operators_for_module(KEYWORD_TO_ATOM, core_ops, OP_REWRITE),
+    quote=QUOTE_ATOM,
+    apply=APPLY_ATOM,
 )
 OPERATOR_LOOKUP.update(operators_for_module(KEYWORD_TO_ATOM, more_ops, OP_REWRITE))

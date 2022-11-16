@@ -1,15 +1,14 @@
-from .EvalError import EvalError
-from .SExp import SExp
-
 from .costs import (
-    IF_COST,
     CONS_COST,
-    FIRST_COST,
-    REST_COST,
-    LISTP_COST,
     EQ_BASE_COST,
     EQ_COST_PER_BYTE,
+    FIRST_COST,
+    IF_COST,
+    LISTP_COST,
+    REST_COST,
 )
+from .EvalError import EvalError
+from .SExp import SExp
 
 
 def op_if(args: SExp):
