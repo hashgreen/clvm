@@ -32,7 +32,7 @@ NULL = b""
 
 
 def looks_like_clvm_object(o: typing.Any) -> bool:
-    return hasattr(o, "atom") and hasattr(o, "pair")
+    return isinstance(o, (SExp, CLVMObject))
 
 
 # this function recognizes some common types and turns them into plain bytes,
@@ -60,7 +60,7 @@ def to_sexp_type(
     v: CastableType,
 ):
 
-    if isinstance(v, (SExp, CLVMObject)):
+    if looks_like_clvm_object(v):
         return v
 
     if isinstance(v, tuple):
@@ -143,13 +143,6 @@ class SExp:
 
     @classmethod
     def to(class_, v: CastableType) -> "SExp":
-        if isinstance(v, class_):
-            return v
-
-        if looks_like_clvm_object(v):
-            return class_(v)
-
-        # this will lazily convert elements
         return class_(to_sexp_type(v))
 
     def cons(self, right):
