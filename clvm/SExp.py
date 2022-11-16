@@ -26,7 +26,7 @@ NULL = b""
 
 
 def looks_like_clvm_object(o: typing.Any) -> bool:
-    return isinstance(o, (SExp, CLVMObject))
+    return hasattr(o, "atom") and hasattr(o, "pair")
 
 
 # this function recognizes some common types and turns them into plain bytes,
