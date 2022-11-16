@@ -28,15 +28,6 @@ repos:
     hooks:
       - id: black
 
-  - repo: local
-    hooks:
-      - id: mypy
-        name: mypy
-        entry: mypy
-        language: python
-        types_or: [python, pyi]
-        args: [--ignore-missing-imports]
-
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v2.27.1
     hooks:
